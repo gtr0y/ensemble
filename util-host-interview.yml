@@ -1,0 +1,20 @@
+- name: "Interview hosts"
+  hosts: all
+  gather_facts: yes
+  tasks:
+  - name: "Ansible remote username"
+    become: no
+    shell: whoami
+    register: username_on_host
+  - name: "Host facts"
+    debug:
+      msg: 
+      - "{{ username_on_host.stdout }}@{{ inventory_hostname }} ({{ ansible_fqdn }})"
+      - "{{ ansible_machine }} {{ ansible_system }} {{ ansible_os_family }} {{ ansible_system_vendor }} {{ ansible_virtualization_role }} {{ ansible_virtualization_type }}"
+      - "{{ ansible_processor_vcpus }} vCPUs, {{ ansible_memory_mb.real.total }} MB RAM"
+#      - "{{ ansible_processor_count }}*{{ ansible_processor_cores }}*{{ ansible_processor_threads_per_core }}={{ ansible_processor_vcpus }} vCPUs"
+#      - "Memory: {{ ansible_memory_mb.real.used }}/{{ ansible_memory_mb.real.total }} ({{ ansible_memory_mb.real.free }}) free"
+      - "Node: {{ ansible_nodename }}"
+      - "Package Manager: {{ ansible_pkg_mgr }}"
+      - "Python: {{ ansible_python_version }}"
+      - "{{ ansible_product_name }} {{ ansible_product_version }}"
